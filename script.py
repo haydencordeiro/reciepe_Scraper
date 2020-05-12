@@ -22,11 +22,11 @@ driver = webdriver.Chrome(chrome_options=chrome_options)
 # options = Options()
 # options.headless = True
 # driver = webdriver.Firefox(options=options)
-dish=input('ENTER DISH NAME: ')
+dish=input('\n\nENTER DISH NAME: ')
 driver.get("https://www.bestindiancooking.com")
-
 # time.sleep(2)
 WebDriverWait(driver,30).until(lambda driver: driver.find_element_by_name('s'))
+print('Searching for recipies please wait')
 driver.find_element(By.NAME, "s").click()
 driver.find_element(By.NAME, "s").send_keys(dish)
 driver.find_element(By.NAME, "s").send_keys(Keys.ENTER)
@@ -38,6 +38,8 @@ title=driver.find_elements_by_xpath('//h2[@class="title-2"]')
 
 WebDriverWait(driver,30).until(lambda driver: driver.find_elements_by_xpath('//div[@class="excerpt"]'))
 ingredients=driver.find_elements_by_xpath('//div[@class="excerpt"]')
+fileWrite=''
+
 
 food={}
 for i,j in enumerate(title):
@@ -50,7 +52,13 @@ for i,j in enumerate(title):
     print(dish_link)
     print(dish_ingr)
     print()
+    fileWrite+=str(i+1)+'.'+'\t'+dish_name+'\n'
+    fileWrite+='Ingredients:'+dish_ingr
+    fileWrite+='\n'+'Link:'+dish_link+'\n\n'
 
 
 
+fp='{}.txt'.format(dish)
+with open(fp,'w') as f:
+   f.write(fileWrite)
 
